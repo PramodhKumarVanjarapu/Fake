@@ -56,5 +56,4 @@ with tab2:
     else:
         st.write("Specify the grid size, upload images, and click 'Process Images' in the Upload Images tab to see the result.")
 
-# Footer
-st.write("Note: This is a demo. Actual defect detection logic is not implemented.")
+
