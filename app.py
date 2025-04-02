@@ -48,7 +48,7 @@ with tab2:
         else:
             st.warning("Result image not found. Please ensure the path is correct.")
             # Display a placeholder image
-            st.image("https://via.placeholder.com/400x300.png?text=Result+Image", caption="Placeholder Result")
+            st.image("https://raw.githubusercontent.com/PramodhKumarVanjarapu/Fake/refs/heads/main/Fake.jpg", caption="Placeholder Result")
         
         st.success("Processing complete!")
     elif process_images:
