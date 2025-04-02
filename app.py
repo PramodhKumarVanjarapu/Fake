@@ -7,30 +7,37 @@ import os
 st.title("Solar Panel Defect Detection")
 
 # Instructions
-st.write("Upload solar panel images to detect defects. Please upload images in a grid format.")
+st.write("Specify the grid size and upload solar panel images to detect defects.")
 
 # Create tabs
 tab1, tab2 = st.tabs(["Upload Images", "Detection Result"])
 
 # Tab 1: Image Upload
 with tab1:
+    # User inputs for rows and columns
+    num_rows = st.number_input("Number of Rows", min_value=1, max_value=10, value=2, step=1)
+    num_cols = st.number_input("Number of Columns", min_value=1, max_value=10, value=2, step=1)
+    
+    total_images = num_rows * num_cols
+    st.write(f"Total images to upload: {total_images}")
+
     # Create a form for image uploads
     with st.form(key='upload_form'):
-        # Create columns for grid-like upload
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            uploaded_files_col1 = st.file_uploader("Column 1 Images", accept_multiple_files=True, type=['png', 'jpg', 'jpeg'])
-        
-        with col2:
-            uploaded_files_col2 = st.file_uploader("Column 2 Images", accept_multiple_files=True, type=['png', 'jpg', 'jpeg'])
+        # Dynamic grid for file uploaders
+        uploaded_files = []
+        for row in range(num_rows):
+            cols = st.columns(num_cols)
+            for col in range(num_cols):
+                with cols[col]:
+                    file = st.file_uploader(f"Row {row+1}, Col {col+1}", type=['png', 'jpg', 'jpeg'], key=f"file_{row}_{col}")
+                    uploaded_files.append(file)
         
         # Submit button
         submit_button = st.form_submit_button(label='Process Images')
 
 # Tab 2: Result Display
 with tab2:
-    if submit_button and (uploaded_files_col1 or uploaded_files_col2):
+    if submit_button and any(uploaded_files):
         st.write("Processing images... Please wait.")
         
         # Simulate processing time (30 seconds)
@@ -50,5 +57,5 @@ with tab2:
         
         st.success("Processing complete!")
     else:
-        st.write("Please upload images and click 'Process Images' in the Upload Images tab to see the result.")
+        st.write("Please specify the grid size, upload images, and click 'Process Images' in the Upload Images tab to see the result.")
 
