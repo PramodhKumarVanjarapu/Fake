@@ -7,7 +7,7 @@ import os
 st.title("Solar Panel Defect Detection")
 
 # Instructions
-st.write("Specify the grid size and upload solar panel images to detect defects.")
+st.write("Specify the grid size and upload all solar panel images at once to detect defects.")
 
 # Create tabs
 tab1, tab2 = st.tabs(["Upload Images", "Detection Result"])
@@ -21,23 +21,15 @@ with tab1:
     total_images = num_rows * num_cols
     st.write(f"Total images to upload: {total_images}")
 
-    # Create a form for image uploads
-    with st.form(key='upload_form'):
-        # Dynamic grid for file uploaders
-        uploaded_files = []
-        for row in range(num_rows):
-            cols = st.columns(num_cols)
-            for col in range(num_cols):
-                with cols[col]:
-                    file = st.file_uploader(f"Row {row+1}, Col {col+1}", type=['png', 'jpg', 'jpeg'], key=f"file_{row}_{col}")
-                    uploaded_files.append(file)
-        
-        # Submit button
-        submit_button = st.form_submit_button(label='Process Images')
+    # Upload all images at once
+    uploaded_files = st.file_uploader("Upload all images", type=['png', 'jpg', 'jpeg'], accept_multiple_files=True)
+    
+    # Submit button
+    process_images = st.button("Process Images")
 
 # Tab 2: Result Display
 with tab2:
-    if submit_button and any(uploaded_files):
+    if process_images and uploaded_files and len(uploaded_files) == total_images:
         st.write("Processing images... Please wait.")
         
         # Simulate processing time (30 seconds)
@@ -46,7 +38,7 @@ with tab2:
         
         # Display the specific result image
         st.subheader("Defect Detection Result")
-        result_image_path = "path/to/your/result_image.jpg"  # Replace with your actual image path
+        result_image_path = "path/to/your/result_image.jpg"  # Replace with actual image path
         if os.path.exists(result_image_path):
             result_image = Image.open(result_image_path)
             st.image(result_image, caption="Detection Result", use_column_width=True)
@@ -56,6 +48,8 @@ with tab2:
             st.image("https://via.placeholder.com/400x300.png?text=Result+Image", caption="Placeholder Result")
         
         st.success("Processing complete!")
+    elif process_images:
+        st.warning(f"Please upload exactly {total_images} images.")
     else:
-        st.write("Please specify the grid size, upload images, and click 'Process Images' in the Upload Images tab to see the result.")
+        st.write("Specify the grid size, upload images, and click 'Process Images' in the Upload Images tab to see the result.")
 
