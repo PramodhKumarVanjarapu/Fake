@@ -36,6 +36,9 @@ with tab2:
         with st.spinner('Analyzing solar panels...'):
             time.sleep(30)
         
+        # Alert user to move to the result tab
+        st.warning("Images processed! Move to the 'Detection Result' tab to view results.")
+        
         # Display the specific result image
         st.subheader("Defect Detection Result")
         result_image_path = "path/to/your/result_image.jpg"  # Replace with actual image path
@@ -53,3 +56,5 @@ with tab2:
     else:
         st.write("Specify the grid size, upload images, and click 'Process Images' in the Upload Images tab to see the result.")
 
+# Footer
+st.write("Note: This is a demo. Actual defect detection logic is not implemented.")
